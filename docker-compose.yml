@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+
+  rdbm:
+    image: mariadb
+    environment: 
+      MYSQL_ROOT_PASSWORD: 1234567890
+      MYSQL_USER: "miriam_user"
+      MYSQL_PASSWORD: "miriam_pass"
+      MYSQL_DATABASE: "miriam_db"
+    volumes: 
+      - db:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.0.4
+    ports:
+      - 8080:80
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234567890
+      PMA_ARBITRARY: 1
+
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      WORDPRESS_DB_HOST: "rdbm"
+      WORDPRESS_DB_USER: "miriam_user"
+      WORDPRESS_DB_PASSWORD: "miriam_pass"
+      WORDPRESS_DB_NAME: "miriam_db"
+    volumes:
+      - wordpress:/var/www/html
+    depends_on: 
+     - rdbm
+
+volumes:
+  wordpress:
+  db:

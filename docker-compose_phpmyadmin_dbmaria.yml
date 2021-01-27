@@ -1,0 +1,20 @@
+version: "3.0"
+services:
+  rdbm:
+    image: mariadb
+    environment: 
+      MYSQL_ROOT_PASSWORD: 1234567890
+      MYSQL_USER: "miriam_user"
+      MYSQL_PASSWORD: "miriam_pass"
+    volumes: 
+      - db:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin:5.0.4
+    ports:
+      - 8080:80
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234567890
+      PMA_ARBITRARY: 1
+
+volumes: 
+  db:
